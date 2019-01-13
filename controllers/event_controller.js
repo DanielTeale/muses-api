@@ -31,8 +31,8 @@ async function update(req, res, next) {
     event.description = description
     event.date = date
     event.location = location
-
     await event.save()
+
     return res.json(event)
   } catch (err) {
     return next(err)
