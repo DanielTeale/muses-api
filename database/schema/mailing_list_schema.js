@@ -10,7 +10,7 @@ const MailingListSchema = new Schema({
     type: String,
     required: true
   },
-  city: [{type: Schema.Types.ObjectId, ref: "Chapter"}]
+  chapter: {type: Schema.Types.ObjectId, ref: "Chapter"}
 })
 
 module.exports = MailingListSchema;

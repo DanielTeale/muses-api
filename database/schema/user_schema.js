@@ -9,7 +9,6 @@ const UserSchema = new Schema({
   },
   bio: {
     type: String,
-    required: true
   },
   avatar: {
     type: String,

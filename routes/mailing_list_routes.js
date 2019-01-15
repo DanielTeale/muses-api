@@ -8,7 +8,7 @@ router.get("/", MailingListController.index);
 
 router.get("/:id", MailingListController.show);
 
-router.get("/:chapter", MailingListController.chapterIndex)
+router.get("/chapter/:chapter", MailingListController.chapterIndex)
 
 router.post("/", celebrate(mailingListVerification), MailingListController.create);
 

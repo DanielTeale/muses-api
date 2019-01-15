@@ -19,10 +19,10 @@ async function show(req, res, next) {
   };
 };
 
-async function chapterIndex(req, res, next, chapter) {
+async function chapterIndex(req, res, next) {
   const {chapter} = req.params
   try {
-    const mailingList = mailingList.find({chapter})
+    const mailingList = await MailingListModel.find({chapter: chapter})
     return res.json(mailingList)
   } catch (err) {
     return next(err)
