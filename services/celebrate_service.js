@@ -27,7 +27,7 @@ const eventVerification = {
 
 const mailingListVerification = {
   body: {
-    email: Joi.email().required(),
+    email: Joi.string().required(),
     name: Joi.string().required(),
     chapter: Joi.string().required()
 
@@ -39,7 +39,7 @@ const mailingListVerification = {
 const chapterVerification = {
   body: {
     city: Joi.string().required(),
-    organisers: Joi.array().required()
+    organisers: Joi.array()
   }
 }
 
