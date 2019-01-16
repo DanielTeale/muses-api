@@ -12,7 +12,7 @@ router.get("/", (req, res) => res.send("Welcome"))
 router.post("/files", fileRoute)
 router.use("/auth", AuthRoutes)
 router.use("/mailinglist", MailingListRoutes)
-router.use("/events", passport.authenticate("jwt", {session: false}), EventRoutes)
+router.use("/events", EventRoutes)
 router.use("/sponsor", passport.authenticate("jwt", {session: false}), SponsorRoutes)
 router.use("/chapter", passport.authenticate("jwt", { session: false }), ChapterRoutes);
 
