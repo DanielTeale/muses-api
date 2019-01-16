@@ -3,7 +3,7 @@ const JWTService = require("../services/jwt_service")
 
 
 function register(req, res, next) {
-  const { email, password, name } = req.body
+  const { email, password, name, bio } = req.body
   const user = new UserModel({ email, name })
 
   UserModel.register(user, password, (err, user) => {

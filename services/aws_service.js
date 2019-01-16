@@ -2,6 +2,7 @@ const AWS = require("aws-sdk")
 const fs = require("fs-extra");
 const bluebird = require("bluebird");
 const fileType = require("file-type");
+const multiparty = require("multiparty")
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_ID,
@@ -23,9 +24,9 @@ const uploadFile = (buffer, name, type) => {
   return s3.upload(params).promise()
 };
 
-const fileRoute = (req, res) => {
+const fileUpload = (req, res) => {
   const form = new multiparty.Form();
-  form.parse(request, async (error, fields, files) => {
+  form.parse(req, async (error, fields, files) => {
     if (error) throw new Error(error);
     try {
       const path = files.file[0].path;
@@ -41,4 +42,4 @@ const fileRoute = (req, res) => {
   })
 };
 
-module.exports = fileRoute;
+module.exports = fileUpload;
