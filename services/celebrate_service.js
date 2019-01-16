@@ -21,7 +21,8 @@ const eventVerification = {
     location: Joi.string().required(),
     sponsors: Joi.array(),
     approved: Joi.boolean().required(),
-    type: Joi.string().required()
+    type: Joi.string().required(),
+    chapter: Joi.string().required()
   }
 }
 
