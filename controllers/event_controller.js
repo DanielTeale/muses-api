@@ -9,9 +9,29 @@ async function index(req, res, next) {
   }
 }
 
+async function show(req, res, next) {
+  const {id} = req.params;
+  try {
+    const event = await EventModel.findById(id)
+    return res.status(200).json(event)
+  } catch (err) {
+    return res.status(400).send(err)
+  }
+};
+
+async function chapterIndex(req, res, next) {
+  const {chapter} = req.params;
+  try {
+    const events = await EventModel.find({chapter: chapter})
+    return res.status(200).json(events);
+  } catch (err) {
+    return res.status(400).send(err)
+  }
+}
+
 async function create(req, res, next) {
-  const {title, description, date, location} = req.body;
-  const event = new EventModel({ title, description, date, location })
+  const {title, description, date, location, chapter, sponsors, type, approved} = req.body;
+  const event = new EventModel({ title, description, date, location, chapter, sponsors, type, approved })
 
   try {
     await event.save();
@@ -23,7 +43,7 @@ async function create(req, res, next) {
 
 async function update(req, res, next) {
   const { id } = req.params
-  const { title, description, date, location } = req.body
+  const { title, description, date, location, chapter, sponsors, type, approved } = req.body
   const event = await EventModel.findById(id)
 
   try {
@@ -31,6 +51,10 @@ async function update(req, res, next) {
     event.description = description
     event.date = date
     event.location = location
+    event.chapter = chapter
+    event.sponsors = sponsors
+    event.type = type
+    event.approved = approved
     await event.save()
 
     return res.json(event)
@@ -53,6 +77,8 @@ async function remove(req, res, next) {
 
 module.exports = {
   index,
+  show,
+  chapterIndex,
   create,
   update,
   remove

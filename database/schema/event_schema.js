@@ -21,17 +21,17 @@ const EventSchema = new Schema({
     type: Schema.Types.ObjectId, 
     ref: "Sponsor"
   }],
-  chapter: [{
+  chapter: {
     type: Schema.Types.ObjectId,
     ref: "Chapter",
     required: true
-  }],
+  },
   approved: Boolean,
-  type: [{
+  type: {
     type: String,
     enum: ["Workshop", "Meetup"],
     required: true
-  }]
+  }
 })
 
 module.exports = EventSchema
