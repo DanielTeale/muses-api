@@ -26,9 +26,9 @@ async function createEvents(city){
     eventPromises.push(EventModel.create({
       title: faker.company.companyName(),
       description: faker.lorem.paragraph(),
-      date: faker.date.recent(),
+      date: faker.date.between('2015-01-01', '2019-12-31'),
       location: faker.address.streetAddress(),
-      sponsor: [],
+      sponsors: [],
       chapter: chapter._id,
       approved: true,
       type: "Workshop"
