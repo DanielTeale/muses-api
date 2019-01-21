@@ -35,11 +35,14 @@ const fileUpload = (req, res, next) => {
       const timestamp = Date.now().toString();
       const fileName = `uploads/${timestamp}`;
       const data = await uploadFile(buffer, fileName, type)
-      return next(data)
+      return data
     } catch (err) {
       return res.status(400).send(err)
     }
   })
 };
 
-module.exports = {fileUpload};
+module.exports = {
+  fileUpload,
+  uploadFile
+};
