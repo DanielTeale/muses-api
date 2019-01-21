@@ -3,6 +3,7 @@ const ChapterSchema = require("./chapter_schema")
 const passportLocalMongoose = require("passport-local-mongoose")
 
 const UserSchema = new Schema({
+  email: String,
   name: {
     type: String,
     required: true
@@ -13,7 +14,10 @@ const UserSchema = new Schema({
   avatar: {
     type: String,
   },
-  chapter: {ChapterSchema},
+  chapter: {
+    type: Schema.Types.ObjectId,
+    ref: "Chapter"
+  },
   website: {
     type: String
   }
