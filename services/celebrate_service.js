@@ -2,13 +2,14 @@ const {Joi} = require("celebrate")
 
 const userVerification = {
   body: {
-    email: Joi.string().email().required(),
+    email: Joi.string().required(),
     password: Joi.string().required(),
     name: Joi.string(),
     avatar: Joi.string(),
     chapter: Joi.string(),
-    url: Joi.string(),
-    socialMedia: Joi.array()
+    website: Joi.string(),
+    bio: Joi.string()
+    // socialMedia: Joi.array()
   }
 }
 

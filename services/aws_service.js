@@ -24,7 +24,7 @@ const uploadFile = (buffer, name, type) => {
   return s3.upload(params).promise()
 };
 
-const fileUpload = (req, res) => {
+const fileUpload = (req, res, next) => {
   const form = new multiparty.Form();
   form.parse(req, async (error, fields, files) => {
     if (error) throw new Error(error);
@@ -35,11 +35,14 @@ const fileUpload = (req, res) => {
       const timestamp = Date.now().toString();
       const fileName = `uploads/${timestamp}`;
       const data = await uploadFile(buffer, fileName, type)
-      return res.status(200).send(data)
+      return data
     } catch (err) {
       return res.status(400).send(err)
     }
   })
 };
 
-module.exports = fileUpload;
+module.exports = {
+  fileUpload,
+  uploadFile
+};

@@ -9,7 +9,7 @@ const passport = require("passport")
 const fileRoute = require("../services/aws_service")
 
 router.get("/", (req, res) => res.send("Welcome"))
-router.post("/files", fileRoute)
+// router.post("/files", fileRoute.fileUpload)
 router.use("/auth", AuthRoutes)
 router.use("/mailinglist", MailingListRoutes)
 router.use("/events", EventRoutes)
