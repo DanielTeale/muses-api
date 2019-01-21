@@ -5,7 +5,7 @@ const EventRoutes = require("./event_routes")
 const MailingListRoutes = require("./mailing_list_routes")
 const SponsorRoutes = require("./sponsor_routes")
 const ChapterRoutes = require("./chapter_routes")
-const passport =  require("passport")
+const passport = require("passport")
 const fileRoute = require("../services/aws_service")
 
 router.get("/", (req, res) => res.send("Welcome"))
@@ -13,7 +13,7 @@ router.post("/files", fileRoute)
 router.use("/auth", AuthRoutes)
 router.use("/mailinglist", MailingListRoutes)
 router.use("/events", EventRoutes)
-router.use("/sponsor", passport.authenticate("jwt", {session: false}), SponsorRoutes)
-router.use("/chapter", passport.authenticate("jwt", { session: false }), ChapterRoutes);
+router.use("/sponsor", passport.authenticate("jwt", { session: false }), SponsorRoutes)
+router.use("/chapter", ChapterRoutes);
 
 module.exports = router;
