@@ -1,6 +1,9 @@
 const {Schema} = require("mongoose");
 
 const EventSchema = new Schema({
+  image:{
+    type: String
+  },
   title: {
     type: String,
     required: true
@@ -26,12 +29,13 @@ const EventSchema = new Schema({
     ref: "Chapter",
     required: true
   },
-  approved: Boolean,
+ 
   type: {
     type: String,
     enum: ["Workshop", "Meetup"],
     required: true
-  }
+  },
+  approved: Boolean
 })
 
 module.exports = EventSchema

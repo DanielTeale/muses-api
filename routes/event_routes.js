@@ -4,7 +4,6 @@ const {eventVerification} = require("../services/celebrate_service");
 const { celebrate } = require("celebrate");
 const passport = require("passport")
 
-
 const EventController = require("../controllers/event_controller")
 
 router.get("/", EventController.index);
