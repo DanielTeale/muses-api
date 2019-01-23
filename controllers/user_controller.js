@@ -104,9 +104,24 @@ async function refresh(req, res) {
   }
 }
 
+async function index(req, res) {
+  try{
+    const {chapter} = req.body
+    const users = await UserModel.find({chapter: chapter})
+    users.forEach((user) => {
+      delete user.salt;
+      delete user.hash;
+    })
+    return res.json(users)
+  } catch (err) {
+    return console.log(err)
+  }
+}
+
 module.exports = {
   register,
   loginVerify,
   update,
-  refresh
+  refresh,
+  index
 }
