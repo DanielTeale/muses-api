@@ -30,8 +30,8 @@ async function chapterIndex(req, res, next) {
 }
 
 async function create(req, res, next) {
-  const {title, description, date, location, chapter, sponsors, type, approved} = req.body;
-  const event = new EventModel({ title, description, date, location, chapter, sponsors, type, approved })
+  const {image, title, description, date, location, chapter, sponsors, type, approved} = req.body;
+  const event = new EventModel({ image, title, description, date, location, chapter, sponsors, type, approved })
 
   try {
     await event.save();
@@ -43,10 +43,11 @@ async function create(req, res, next) {
 
 async function update(req, res, next) {
   const { id } = req.params
-  const { title, description, date, location, chapter, sponsors, type, approved } = req.body
+  const { image, title, description, date, location, chapter, sponsors, type, approved } = req.body
   const event = await EventModel.findById(id)
 
   try {
+    event.image = image
     event.title = title
     event.description = description
     event.date = date

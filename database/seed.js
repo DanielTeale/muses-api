@@ -31,10 +31,11 @@ allPromises.push(ChapterModel.create({
   city: "Perth"
 }))
 
-async function createEvents(city) {
-  const chapter = await ChapterModel.findOne({ city: city })
-  for (let i = 0; i < 10; i++) {
-    allPromises.push(EventModel.create({
+async function createEvents(city){
+  const chapter = await ChapterModel.findOne({city: city})
+  for(let i = 0; i < 10; i++) {
+    eventPromises.push(EventModel.create({
+      image: faker.image.imageUrl(),
       title: faker.company.companyName(),
       description: faker.lorem.paragraph(),
       date: faker.date.between('2015-01-01', '2019-12-31'),
