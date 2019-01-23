@@ -9,5 +9,6 @@ const UserController = require("../controllers/user_controller")
 router.post("/register", UserController.register);
 router.post("/login", celebrate(userVerification), UserController.loginVerify);
 router.patch("/login", passport.authenticate("jwt", { session: false }), UserController.update)
+router.post("/refresh", passport.authenticate("jwt", { session: false }), UserController.refresh)
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const {Joi} = require("celebrate")
+const { Joi } = require("celebrate")
 
 const userVerification = {
   body: {
@@ -54,10 +54,19 @@ const sponsorVerification = {
   }
 }
 
+const resourceVerification = {
+  body: {
+    title: Joi.string().required(),
+    description: Joi.string().required(),
+    link: Joi.string().required()
+  }
+}
+
 module.exports = {
   userVerification,
   eventVerification,
   mailingListVerification,
   chapterVerification,
-  sponsorVerification
+  sponsorVerification,
+  resourceVerification
 }
