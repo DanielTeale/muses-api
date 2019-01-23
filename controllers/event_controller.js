@@ -2,7 +2,7 @@ const EventModel = require("../database/models/event_model")
 
 async function index(req, res, next) {
   try {
-    const events = await EventModel.find()
+    const events = await EventModel.find().populate('sponsors').populate('chapter').exec()
     return res.json(events)
   } catch (err) {
     return next(console.log(err));
