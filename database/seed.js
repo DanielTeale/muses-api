@@ -4,6 +4,7 @@ const mongoose = require("mongoose")
 require("./connect")
 const EventModel = require("./models/event_model")
 const ChapterModel = require("../database/models/chapter_model")
+const SponsorModel = require("./models/sponsor_model")
 
 const eventPromises = []
 
@@ -36,6 +37,16 @@ async function createEvents(city){
   }
 };
 
+async function createSponsors(){
+  for (let i = 0; i < 10; i++ ){
+    eventPromises.push(SponsorModel.create({
+      name: faker.company.companyName(),
+      description: faker.lorem.paragraph(),
+      website: faker.internet.url(),
+      logo: faker.image.imageUrl()
+    }))
+  }
+}
 
 async function runSeed() {
 
@@ -43,6 +54,7 @@ async function runSeed() {
   await createEvents("Melbourne");
   await createEvents("Brisbane");
   await createEvents("Perth");
+  await createSponsors()
 
   Promise.all(eventPromises)
     .then(events => {
