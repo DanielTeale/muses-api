@@ -20,7 +20,11 @@ const UserSchema = new Schema({
   },
   website: {
     type: String
-  }
+  },
+  // role: {
+  //   type: String,
+  //   enum: ["Admin", "Organiser", "Public"]
+  // }
   // TODO: link 
   // socialMedia: []
 })
