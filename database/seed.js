@@ -5,26 +5,37 @@ require("./connect")
 const EventModel = require("./models/event_model")
 const ChapterModel = require("../database/models/chapter_model")
 const SponsorModel = require("./models/sponsor_model")
+const ResourceModel = require("../database/models/resource_model");
 
-const eventPromises = []
+async function createResources() {
+  for (let i = 0; i < 10; i++) {
+    allPromises.push(ResourceModel.create({
+      title: faker.lorem.sentence(),
+      description: faker.lorem.text(),
+      link: faker.internet.url()
+    }));
+  }
+}
 
-eventPromises.push(ChapterModel.create({
+const allPromises = [];
+
+allPromises.push(ChapterModel.create({
   city: "Sydney"
 }))
-eventPromises.push(ChapterModel.create({
+allPromises.push(ChapterModel.create({
   city: "Melbourne"
 }))
-eventPromises.push(ChapterModel.create({
+allPromises.push(ChapterModel.create({
   city: "Brisbane"
 }))
-eventPromises.push(ChapterModel.create({
+allPromises.push(ChapterModel.create({
   city: "Perth"
 }))
 
-async function createEvents(city){
-  const chapter = await ChapterModel.findOne({city: city})
-  for(let i = 0; i < 10; i++) {
-    eventPromises.push(EventModel.create({
+async function createEvents(city) {
+  const chapter = await ChapterModel.findOne({ city: city })
+  for (let i = 0; i < 10; i++) {
+    allPromises.push(EventModel.create({
       title: faker.company.companyName(),
       description: faker.lorem.paragraph(),
       date: faker.date.between('2015-01-01', '2019-12-31'),
@@ -56,9 +67,11 @@ async function runSeed() {
   await createEvents("Perth");
   await createSponsors()
 
-  Promise.all(eventPromises)
-    .then(events => {
-      console.log(`Seeds file successful, created ${events.length} events`)
+  await createResources();
+
+  Promise.all(allPromises)
+    .then(entries => {
+      console.log(`Seeds file successful, created ${entries.length} entries.`)
     })
     .then(() => mongoose.disconnect())
     .catch(err => console.log(`Seeds file had an error: ${err}`))

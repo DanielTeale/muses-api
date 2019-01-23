@@ -1,7 +1,7 @@
 const ChapterModel = require("../database/models/chapter_model")
 
 async function index(req, res, next) {
-  try{
+  try {
     const chapters = await ChapterModel.find()
     return res.json(chapters)
   } catch (err) {
@@ -10,8 +10,8 @@ async function index(req, res, next) {
 };
 
 async function show(req, res, next) {
-  const {id} = req.params
-  try{
+  const { id } = req.params
+  try {
     const chapter = await ChapterModel.findById(id)
     return res.json(chapter)
   } catch (err) {
@@ -20,8 +20,8 @@ async function show(req, res, next) {
 };
 
 async function create(req, res, next) {
-  const {city} = req.body
-  const chapter = new ChapterModel({city})
+  const { city } = req.body
+  const chapter = new ChapterModel({ city })
   try {
     await chapter.save()
     return res.json(chapter)
@@ -31,8 +31,8 @@ async function create(req, res, next) {
 };
 
 async function update(req, res, next) {
-  const {id} = req.params
-  const {city, organisers} = req.body
+  const { id } = req.params
+  const { city, organisers } = req.body
   try {
     const chapter = await ChapterModel.findById(id)
     chapter.city = city
@@ -49,8 +49,8 @@ async function update(req, res, next) {
 };
 
 async function remove(req, res, next) {
-  const {id} = req.params;
-  try{
+  const { id } = req.params;
+  try {
     const chapter = await ChapterModel.findById(id)
     await ChapterModel.remove(chapter)
     return res.send("Removed")
