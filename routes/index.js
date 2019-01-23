@@ -14,7 +14,7 @@ router.get("/", (req, res) => res.send("Welcome"))
 router.use("/auth", AuthRoutes)
 router.use("/mailinglist", MailingListRoutes)
 router.use("/events", EventRoutes)
-router.use("/sponsor", passport.authenticate("jwt", { session: false }), SponsorRoutes)
+router.use("/sponsor", SponsorRoutes)
 router.use("/chapter", ChapterRoutes);
 router.use("/resources", ResourceRoutes);
 

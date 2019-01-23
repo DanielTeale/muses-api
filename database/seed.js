@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 require("./connect")
 const EventModel = require("./models/event_model")
 const ChapterModel = require("../database/models/chapter_model")
-const SponsorModel = require("./models")
+const SponsorModel = require("./models/sponsor_model")
 const ResourceModel = require("../database/models/resource_model");
 
 const allPromises = []
@@ -52,7 +52,7 @@ async function createEvents(city){
 async function createSponsors(){
   for (let i = 0; i < 10; i++ ){
     allPromises.push(SponsorModel.create({
-      name: faker.companyName(),
+      name: faker.company.companyName(),
       description: faker.lorem.paragraph(),
       website: faker.internet.url(),
       logo: faker.image.imageUrl()
@@ -71,8 +71,8 @@ async function runSeed() {
   await createEvents("Perth");
 
   Promise.all(allPromises)
-    .then(events => {
-      console.log(`Seeds file successful, created ${events.length} events`)
+    .then(entries => {
+      console.log(`Seeds file successful, created ${entries.length} entries`)
     })
     .then(() => mongoose.disconnect())
     .catch(err => console.log(`Seeds file had an error: ${err}`))
