@@ -25,7 +25,8 @@ async function create(req, res, next) {
 
   try {
     await resource.save();
-    return res.json(resource)
+    const resources = await ResourceModel.find();
+    return res.json(resources)
   } catch (err) {
     return next(err)
   }

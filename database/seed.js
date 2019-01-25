@@ -7,6 +7,7 @@ const ChapterModel = require("../database/models/chapter_model")
 const SponsorModel = require("./models/sponsor_model")
 const ResourceModel = require("../database/models/resource_model");
 
+const allPromises = []
 async function createResources() {
   for (let i = 0; i < 10; i++) {
     allPromises.push(ResourceModel.create({
@@ -16,8 +17,6 @@ async function createResources() {
     }));
   }
 }
-
-const allPromises = [];
 
 allPromises.push(ChapterModel.create({
   city: "Sydney"
@@ -32,15 +31,17 @@ allPromises.push(ChapterModel.create({
   city: "Perth"
 }))
 
-async function createEvents(city) {
-  const chapter = await ChapterModel.findOne({ city: city })
-  for (let i = 0; i < 10; i++) {
+async function createEvents(city){
+  const chapter = await ChapterModel.findOne({city: city})
+  const sponsors = await SponsorModel.find()
+  for(let i = 0; i < 10; i++) {
+    const sponsor = sponsors[Math.floor(Math.random() * 10)]
     allPromises.push(EventModel.create({
       title: faker.company.companyName(),
       description: faker.lorem.paragraph(),
       date: faker.date.between('2015-01-01', '2019-12-31'),
       location: faker.address.streetAddress(),
-      sponsors: [],
+      sponsors: [sponsor._id],
       chapter: chapter._id,
       approved: true,
       type: "Workshop"
@@ -50,7 +51,7 @@ async function createEvents(city) {
 
 async function createSponsors(){
   for (let i = 0; i < 10; i++ ){
-    eventPromises.push(SponsorModel.create({
+    allPromises.push(SponsorModel.create({
       name: faker.company.companyName(),
       description: faker.lorem.paragraph(),
       website: faker.internet.url(),
@@ -60,6 +61,9 @@ async function createSponsors(){
 }
 
 async function runSeed() {
+  await createSponsors()
+  
+  await createResources()
 
   await createEvents("Sydney");
   await createEvents("Melbourne");
@@ -67,11 +71,9 @@ async function runSeed() {
   await createEvents("Perth");
   await createSponsors()
 
-  await createResources();
-
   Promise.all(allPromises)
     .then(entries => {
-      console.log(`Seeds file successful, created ${entries.length} entries.`)
+      console.log(`Seeds file successful, created ${entries.length} entries`)
     })
     .then(() => mongoose.disconnect())
     .catch(err => console.log(`Seeds file had an error: ${err}`))
