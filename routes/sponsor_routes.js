@@ -11,8 +11,8 @@ router.get("/:id", SponsorController.show)
 
 router.post("/", passport.authenticate("jwt", { session: false }), SponsorController.create);
 
-router.put("/:id", celebrate(sponsorVerification), SponsorController.update);
-router.patch("/:id", celebrate(sponsorVerification), SponsorController.update);
+router.put("/:id", celebrate(sponsorVerification), passport.authenticate("jwt", { session: false }), SponsorController.update);
+router.patch("/:id", celebrate(sponsorVerification), passport.authenticate("jwt", { session: false }), SponsorController.update);
 
 router.delete("/:id", SponsorController.remove)
 

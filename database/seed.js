@@ -69,6 +69,7 @@ async function runSeed() {
   await createEvents("Melbourne");
   await createEvents("Brisbane");
   await createEvents("Perth");
+  await createSponsors()
 
   Promise.all(allPromises)
     .then(entries => {
