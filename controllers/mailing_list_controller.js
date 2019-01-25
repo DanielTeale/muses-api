@@ -36,7 +36,7 @@ async function create(req, res, next) {
     await mailingList.save();
     return res.json(mailingList)
   } catch (err) {
-    return next(err)
+    return res.json(err)
   }
 };
 

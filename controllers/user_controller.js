@@ -9,6 +9,7 @@ async function register(req, res) {
   let form = new multiparty.Form()
   form.parse(req, async (error, fields, files) => {
     if (error) throw new Error(error);
+    
     try {
       if (files.file) {
         const path = files.file[0].path;
@@ -25,6 +26,7 @@ async function register(req, res) {
           formFields[key] = fields[key][0]
         }
       }
+      console.log(data)
       if (data) {
         formFields.avatar = data.Location
       } else {
