@@ -1,5 +1,4 @@
 const EventModel = require("../database/models/event_model");
-//const JWTService = require("../services/jwt_service");
 const AWSService = require("../services/aws_service");
 const multiparty = require("multiparty");
 const fileType = require("file-type");
@@ -34,18 +33,6 @@ async function chapterIndex(req, res, next) {
   }
 }
 
-// async function create(req, res, next) {
-//   const {image, title, description, date, location, chapter, sponsors, type, approved} = req.body;
-//   const event = new EventModel({ image, title, description, date, location, chapter, sponsors, type, approved })
-
-//   try {
-//     await event.save();
-//     return res.json(event)
-//   } catch (err) {
-//     return next(err)
-//   }
-// };
-
 //Create
 async function create(req, res) {
   let form = new multiparty.Form();
@@ -62,13 +49,12 @@ async function create(req, res) {
         const fileName = `uploads/${timestamp}`;
 
         var data = await AWSService.uploadFile(buffer, fileName, type);
-        //console.log(data);
       }
       const formFields = {}
       for (let key in fields) {
         formFields[key] = fields[key][0];
       }
-      console.log(data);
+     
       if (data) {
         formFields.image = data.Location;
       } else {
@@ -88,7 +74,6 @@ async function create(req, res) {
     }
   })
 }
-
 
 //Update
 async function update(req, res, next) {
