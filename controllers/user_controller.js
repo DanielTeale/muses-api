@@ -1,4 +1,5 @@
 const UserModel = require("../database/models/user_model")
+const mongoose = require("mongoose")
 const JWTService = require("../services/jwt_service")
 const AWSService = require("../services/aws_service")
 const multiparty = require("multiparty")
@@ -21,7 +22,7 @@ async function register(req, res) {
       }
       const formFields = {}
       for (let key in fields) {
-        if (key !== "password"){
+        if (key !== "password") {
           formFields[key] = fields[key][0]
         }
       }
@@ -30,7 +31,7 @@ async function register(req, res) {
       } else {
         formFields.avatar = null
       }
-      
+
       const password = fields.password[0]
       const user = new UserModel(formFields)
 
@@ -52,8 +53,8 @@ async function register(req, res) {
 }
 
 async function loginVerify(req, res, next) {
-  const {email, password} = req.body
-  const user = await UserModel.findOne({email})
+  const { email, password } = req.body
+  const user = await UserModel.findOne({ email })
   if (!user) {
     return next(res.send("Incorrect name or password"))
   }
@@ -71,7 +72,7 @@ async function loginVerify(req, res, next) {
 
 async function update(req, res) {
 
-  const {email, name, bio, chapter, website, avatar} = req.body
+  const { email, name, bio, chapter, website, avatar } = req.body
   const user = await UserModel.findOne({ email })
 
 
@@ -84,7 +85,7 @@ async function update(req, res) {
     user.avatar = avatar
     await user.save()
     const token = JWTService.generateToken(user)
-    const data = {user, token}
+    const data = { user, token }
     console.log(data)
     return res.json(data);
   } catch (err) {
@@ -93,14 +94,33 @@ async function update(req, res) {
 }
 
 async function refresh(req, res) {
-  try{
+  try {
     const user = req.user
 
     const token = JWTService.generateToken(user)
-    const data = {user, token}
+    const data = { user, token }
     return res.json(data)
   } catch (err) {
     return res.send(err)
+  }
+}
+
+async function index(req, res) {
+  try {
+    let users;
+    if (req.query.city === undefined) {
+      users = await UserModel.find()
+    } else {
+      const chapter = mongoose.Types.ObjectId(req.query.city);
+      users = await UserModel.find({ chapter });
+    }
+    users.forEach((user) => {
+      delete user.salt;
+      delete user.hash;
+    })
+    return res.json(users)
+  } catch (err) {
+    return console.log(err)
   }
 }
 
@@ -108,5 +128,6 @@ module.exports = {
   register,
   loginVerify,
   update,
-  refresh
+  refresh,
+  index
 }
