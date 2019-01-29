@@ -9,7 +9,7 @@ async function register(req, res) {
   let form = new multiparty.Form()
   form.parse(req, async (error, fields, files) => {
     if (error) throw new Error(error);
-    
+
     try {
       if (files.file) {
         const path = files.file[0].path;
@@ -72,26 +72,42 @@ async function loginVerify(req, res, next) {
 }
 
 async function update(req, res) {
+  let form = new multiparty.Form()
+  form.parse(req, async (error, fields, files) => {
+    if (error) throw new Error(error);
 
-  const {email, name, bio, chapter, website, avatar} = req.body
-  const user = await UserModel.findOne({ email })
+    try {
+      if (files.file) {
+        const path = files.file[0].path;
+        const buffer = fs.readFileSync(path);
+        const type = fileType(buffer);
+        const timestamp = Date.now().toString();
+        const fileName = `uploads/${timestamp}`;
 
-
-  try {
-    user.email = email
-    user.name = name
-    user.bio = bio
-    user.chapter = chapter
-    user.website = website
-    user.avatar = avatar
-    await user.save()
-    const token = JWTService.generateToken(user)
-    const data = {user, token}
-    console.log(data)
-    return res.json(data);
-  } catch (err) {
-    return res.status(400).send(err)
-  }
+        var data = await AWSService.uploadFile(buffer, fileName, type)
+      }
+    
+      const user = await UserModel.findOne({email: fields.email[0]})
+      for (let key in fields) {
+        user[key] = fields[key][0]
+      }
+      if (data) {
+        user["avatar"] = data.Location
+      }
+      try{
+        await user.save()
+        delete user.hash
+        delete user.salt
+        const token = JWTService.generateToken(user)
+        const data = {user, token}
+        return res.json(data);
+      } catch (err) {
+        console.log(err)
+      }
+    } catch (err) {
+      return res.status(400).send(err)
+    }
+  })
 }
 
 async function refresh(req, res) {
