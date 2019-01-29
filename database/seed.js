@@ -48,6 +48,7 @@ async function createEvents(city) {
   for (let i = 0; i < 10; i++) {
     const sponsor = sponsors[Math.floor(Math.random() * 10)]
     allPromises.push(EventModel.create({
+      image: 'http://lorempixel.com/640/480/',
       title: faker.company.companyName(),
       description: faker.lorem.paragraph(),
       date: faker.date.between('2015-01-01', '2019-12-31'),
