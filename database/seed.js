@@ -55,7 +55,7 @@ async function createSponsors(){
       name: faker.company.companyName(),
       description: faker.lorem.paragraph(),
       website: faker.internet.url(),
-      logo: faker.image.imageUrl()
+      image: faker.image.imageUrl()
     }))
   }
 }

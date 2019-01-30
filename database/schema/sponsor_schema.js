@@ -13,7 +13,7 @@ const SponsorSchema = new Schema({
     type: String,
     required: true
   },
-  logo: {
+  image: {
     type: String
   }
 })
