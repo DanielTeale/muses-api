@@ -50,7 +50,7 @@ const sponsorVerification = {
     name: Joi.string().required(),
     description: Joi.string().required(),
     website: Joi.string().required(),
-    logo: Joi.string().required()
+    image: Joi.string().required()
   }
 }
 

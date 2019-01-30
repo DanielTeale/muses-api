@@ -6,11 +6,11 @@ const passport = require("passport")
 
 router.get("/", NewsController.index);
 
-router.post("/", NewsController.create);
+router.post("/", passport.authenticate("jwt", { session: false }), NewsController.create);
 
-router.put("/:id", NewsController.update)
-router.patch("/:id", NewsController.update)
+router.put("/:id", passport.authenticate("jwt", { session: false }), NewsController.update)
+router.patch("/:id", passport.authenticate("jwt", { session: false }), NewsController.update)
 
-router.delete("/:id", NewsController.remove)
+router.delete("/:id", passport.authenticate("jwt", { session: false }), NewsController.remove)
 
 module.exports = router;
