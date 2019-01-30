@@ -1,10 +1,8 @@
+const multiparty = require("multiparty")
 const UserModel = require("../database/models/user_model")
 const mongoose = require("mongoose")
 const JWTService = require("../services/jwt_service")
 const AWSService = require("../services/aws_service")
-const multiparty = require("multiparty")
-const fileType = require("file-type");
-const fs = require("fs-extra");
 
 async function register(req, res) {
   let form = new multiparty.Form()
@@ -13,27 +11,10 @@ async function register(req, res) {
 
     try {
       if (files.file) {
-        const path = files.file[0].path;
-        const buffer = fs.readFileSync(path);
-        const type = fileType(buffer);
-        const timestamp = Date.now().toString();
-        const fileName = `uploads/${timestamp}`;
-
-        var data = await AWSService.uploadFile(buffer, fileName, type)
+        var data = await AWSService.fileUpload(files)
       }
-      const formFields = {}
-      for (let key in fields) {
-        if (key !== "password") {
-          formFields[key] = fields[key][0]
-        }
-      }
-      console.log(data)
-      if (data) {
-        formFields.avatar = data.Location
-      } else {
-        formFields.avatar = null
-      }
-
+      const formFields = fieldsParseCreate(fields, data)
+      
       const password = fields.password[0]
       const user = new UserModel(formFields)
 
@@ -79,28 +60,18 @@ async function update(req, res) {
 
     try {
       if (files.file) {
-        const path = files.file[0].path;
-        const buffer = fs.readFileSync(path);
-        const type = fileType(buffer);
-        const timestamp = Date.now().toString();
-        const fileName = `uploads/${timestamp}`;
-
-        var data = await AWSService.uploadFile(buffer, fileName, type)
+        var data = await AWSService.fileUpload(files)
       }
     
       const user = await UserModel.findOne({email: fields.email[0]})
-      for (let key in fields) {
-        user[key] = fields[key][0]
-      }
-      if (data) {
-        user["avatar"] = data.Location
-      }
+      const updatedUser = AWSService.fieldsParseUpdate(fields, data, user)
+      
       try{
-        await user.save()
-        delete user.hash
-        delete user.salt
-        const token = JWTService.generateToken(user)
-        const data = {user, token}
+        await updatedUser.save()
+        delete updatedUser.hash
+        delete updatedUser.salt
+        const token = JWTService.generateToken(updatedUser)
+        const data = {user: updatedUser, token}
         return res.json(data);
       } catch (err) {
         console.log(err)
@@ -108,7 +79,7 @@ async function update(req, res) {
     } catch (err) {
       return res.status(400).send(err)
     }
-  })
+  });
 }
 
 async function refresh(req, res) {

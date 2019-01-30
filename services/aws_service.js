@@ -24,25 +24,46 @@ const uploadFile = (buffer, name, type) => {
   return s3.upload(params).promise()
 };
 
-const fileUpload = (req, res, next) => {
-  const form = new multiparty.Form();
-  form.parse(req, async (error, fields, files) => {
-    if (error) throw new Error(error);
-    try {
-      const path = files.file[0].path;
-      const buffer = fs.readFileSync(path);
-      const type = fileType(buffer);
-      const timestamp = Date.now().toString();
-      const fileName = `uploads/${timestamp}`;
-      const data = await uploadFile(buffer, fileName, type)
-      return data
-    } catch (err) {
-      return res.status(400).send(err)
+const fileUpload = async (files) => {
+  const path = files.file[0].path;
+  const buffer = fs.readFileSync(path);
+  const type = fileType(buffer);
+  const timestamp = Date.now().toString();
+  const fileName = `uploads/${timestamp}`;
+  const data = await uploadFile(buffer, fileName, type)
+  return data
+}
+
+const fieldParseCreate = (fields, data) => {
+  const formFields = {}
+  for (let key in fields) {
+    if (key !== "password") {
+      formFields[key] = fields[key][0]
     }
-  })
-};
+  }
+  if (data) {
+    formFields.image = data.Location
+  } else {
+    formFields.image = null
+  }
+  return formFields
+}
+
+const fieldsParseUpdate = (fields, data, model) => {
+  for (let key in fields) {
+    if (key !== "password") {
+      model[key] = fields[key][0]
+    }
+  }
+  if (data) {
+    model.image = data.Location
+  }
+  return model
+}
 
 module.exports = {
   fileUpload,
-  uploadFile
+  uploadFile,
+  fieldParseCreate,
+  fieldsParseUpdate
 };
