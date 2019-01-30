@@ -20,6 +20,10 @@ const EventSchema = new Schema({
     type: Date,
     required: true
   },
+  // time:{
+  //   type: Time,
+  //   required: true
+  // },
   sponsors: [{
     type: Schema.Types.ObjectId, 
     ref: "Sponsor"

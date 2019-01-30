@@ -1,5 +1,6 @@
 const multiparty = require("multiparty")
 const UserModel = require("../database/models/user_model")
+const mongoose = require("mongoose")
 const JWTService = require("../services/jwt_service")
 const AWSService = require("../services/aws_service")
 
@@ -35,8 +36,8 @@ async function register(req, res) {
 }
 
 async function loginVerify(req, res, next) {
-  const {email, password} = req.body
-  const user = await UserModel.findOne({email})
+  const { email, password } = req.body
+  const user = await UserModel.findOne({ email })
   if (!user) {
     return next(res.send("Incorrect name or password"))
   }
@@ -82,11 +83,11 @@ async function update(req, res) {
 }
 
 async function refresh(req, res) {
-  try{
+  try {
     const user = req.user
 
     const token = JWTService.generateToken(user)
-    const data = {user, token}
+    const data = { user, token }
     return res.json(data)
   } catch (err) {
     return res.send(err)
@@ -94,9 +95,14 @@ async function refresh(req, res) {
 }
 
 async function index(req, res) {
-  try{
-    const {chapter} = req.body
-    const users = await UserModel.find({chapter: chapter})
+  try {
+    let users;
+    if (req.query.city === undefined) {
+      users = await UserModel.find()
+    } else {
+      const chapter = mongoose.Types.ObjectId(req.query.city);
+      users = await UserModel.find({ chapter });
+    }
     users.forEach((user) => {
       delete user.salt;
       delete user.hash;
