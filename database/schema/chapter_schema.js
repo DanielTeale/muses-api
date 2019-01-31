@@ -1,4 +1,5 @@
-const {Schema} = require("mongoose")
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 const UserSchema = require("./user_schema")
 
 const ChapterSchema = new Schema({
@@ -6,7 +7,10 @@ const ChapterSchema = new Schema({
     type: String,
     required: true
   },
-  organisers: [UserSchema]
+  organisers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  }]
 })
 
 module.exports = ChapterSchema

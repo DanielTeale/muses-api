@@ -10,11 +10,13 @@ const UserModel = require("../database/models/user_model");
 
 const allPromises = []
 
-async function createUsers() {
+async function createUsers(city) {
+  const chapter = await ChapterModel.findOne({ city: city });
   for (let i = 0; i < 50; i++) {
     allPromises.push(UserModel.create({
       email: faker.internet.email(),
       name: faker.name.findName(),
+      chapter: chapter._id,
     }));
   }
 }
@@ -77,7 +79,11 @@ async function runSeed() {
 
   await createResources()
 
-  await createUsers()
+  await createUsers("Sydney");
+  await createUsers("Melbourne");
+  await createUsers("Brisbane");
+  await createUsers("Perth");
+
 
   await createEvents("Sydney");
   await createEvents("Melbourne");
