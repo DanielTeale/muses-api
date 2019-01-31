@@ -81,7 +81,8 @@ async function update(req, res, next) {
   let form = new multiparty.Form();
   form.parse(req, async (error, fields, files) => {
     if (error) {throw new Error(error);}
-    console.log(files);
+    // console.log(files);
+    console.log(fields)
     try {
 
       if (files.file) {
@@ -115,7 +116,7 @@ async function update(req, res, next) {
         return console.log(err);
       }
     }catch(err){
-      return res.json(err);
+      return console.log(err);
     }
   })
 }

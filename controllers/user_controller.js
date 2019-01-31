@@ -13,7 +13,7 @@ async function register(req, res) {
       if (files.file) {
         var data = await AWSService.fileUpload(files)
       }
-      const formFields = fieldsParseCreate(fields, data)
+      const formFields = AWSService.fieldsParseCreate(fields, data)
       
       const password = fields.password[0]
       const user = new UserModel(formFields)
@@ -77,7 +77,8 @@ async function update(req, res) {
         console.log(err)
       }
     } catch (err) {
-      return res.status(400).send(err)
+      // return res.status(400).send(err)
+      return console.log(err)
     }
   });
 }

@@ -31,18 +31,23 @@ async function create(req, res, next) {
 };
 
 async function update(req, res, next) {
-  const { id } = req.params
-  const { city, organisers } = req.body
+  const { id } = req.params;
+  const { city, organisers } = req.body;
+  console.log(city);
   try {
     const chapter = await ChapterModel.findById(id)
     chapter.city = city
     if (organisers) {
-      organisers.forEach(organiser => {
-        chapter.organisers.push(organiser)
-      });
+      const organisersIds = chapter.organisers.map(organiser => organiser.toString());
+      organisers
+        .filter(organiser => !organisersIds.includes(organiser._id))
+        .forEach(organiser => {
+          chapter.organisers.push(organiser)
+        });
     };
     await chapter.save();
-    return res.json(chapter)
+    const chapters = await ChapterModel.find();
+    return res.json(chapters)
   } catch (err) {
     return next(err)
   }

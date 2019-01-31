@@ -34,7 +34,7 @@ const fileUpload = async (files) => {
   return data
 }
 
-const fieldParseCreate = (fields, data) => {
+const fieldsParseCreate = (fields, data) => {
   const formFields = {}
   for (let key in fields) {
     if (key !== "password") {
@@ -64,6 +64,6 @@ const fieldsParseUpdate = (fields, data, model) => {
 module.exports = {
   fileUpload,
   uploadFile,
-  fieldParseCreate,
+  fieldsParseCreate,
   fieldsParseUpdate
 };
