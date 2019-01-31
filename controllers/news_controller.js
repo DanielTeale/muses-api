@@ -76,7 +76,7 @@ async function remove(req, res) {
   try {
     const newsItem = await NewsModel.findById(id)
     await NewsModel.remove(newsItem)
-    return res.send("Removed")
+    return res.json("Removed")
   } catch (err) {
     return next(err)
   }

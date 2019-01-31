@@ -29,18 +29,18 @@ async function createResources() {
   }
 }
 
-// allPromises.push(ChapterModel.create({
-//   city: "Sydney"
-// }))
-// allPromises.push(ChapterModel.create({
-//   city: "Melbourne"
-// }))
-// allPromises.push(ChapterModel.create({
-//   city: "Brisbane"
-// }))
-// allPromises.push(ChapterModel.create({
-//   city: "Perth"
-// }))
+allPromises.push(ChapterModel.create({
+  city: "Sydney"
+}))
+allPromises.push(ChapterModel.create({
+  city: "Melbourne"
+}))
+allPromises.push(ChapterModel.create({
+  city: "Brisbane"
+}))
+allPromises.push(ChapterModel.create({
+  city: "Perth"
+}))
 
 async function createEvents(city) {
   const chapter = await ChapterModel.findOne({ city: city })
