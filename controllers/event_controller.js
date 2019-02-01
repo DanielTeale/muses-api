@@ -54,7 +54,7 @@ async function create(req, res) {
       for (let key in fields) {
         formFields[key] = fields[key][0];
       }
-     
+    
       if (data) {
         formFields.image = data.Location;
       } else {
@@ -82,7 +82,6 @@ async function update(req, res, next) {
   form.parse(req, async (error, fields, files) => {
     if (error) {throw new Error(error);}
     // console.log(files);
-    console.log(fields)
     try {
 
       if (files.file) {
@@ -99,7 +98,7 @@ async function update(req, res, next) {
       for (let key in fields) {
         formFields[key] = fields[key][0];
       }
-     
+    
       if (data) {
         formFields.image = data.Location;
       } else {
@@ -108,7 +107,7 @@ async function update(req, res, next) {
       
       try{
         const event = await EventModel.findByIdAndUpdate(req.params.id, formFields);
-       // console.log(fields);
+        // console.log(fields);
         await event.save();
         const events = await EventModel.find().populate('sponsors').populate('chapter').exec();
         return res.json(events);

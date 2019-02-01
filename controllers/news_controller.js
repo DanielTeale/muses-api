@@ -20,7 +20,7 @@ async function create(req, res) {
       if (files.file) {
         var data = await AWSService.fileUpload(files)
       }
-      const formFields = AWSService.fieldParseCreate(fields, data)
+      const formFields = AWSService.fieldsParseCreate(fields, data)
       
       const date = new Date()
 
@@ -76,7 +76,8 @@ async function remove(req, res) {
   try {
     const newsItem = await NewsModel.findById(id)
     await NewsModel.remove(newsItem)
-    return res.json("Removed")
+    const news = await NewsModel.find()
+    return res.json(news)
   } catch (err) {
     return next(err)
   }

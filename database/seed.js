@@ -54,6 +54,8 @@ async function createEvents(city) {
       title: faker.company.companyName(),
       description: faker.lorem.paragraph(),
       date: faker.date.between('2015-01-01', '2019-12-31'),
+      start_time: "18:00",
+      end_time: "21:00",
       location: faker.address.streetAddress(),
       sponsors: [sponsor._id],
       chapter: chapter._id,
