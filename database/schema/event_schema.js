@@ -20,10 +20,14 @@ const EventSchema = new Schema({
     type: Date,
     required: true
   },
-  // time:{
-  //   type: Time,
-  //   required: true
-  // },
+  start_time:{
+    type: String,
+    required: true
+  },
+  end_time:{
+    type: String,
+    required: true
+  },
   sponsors: [{
     type: Schema.Types.ObjectId, 
     ref: "Sponsor"
