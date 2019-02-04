@@ -1,9 +1,23 @@
 const ChapterModel = require("../database/models/chapter_model")
+const UserModel = require("../database/models/user_model")
+
+// add organisers in a single chapter
+async function populateOrganisers(chapter) {
+  const organisers = await Promise.all(chapter.organisers.map(organiserId => UserModel.findById(organiserId)));
+  chapter.organisers = organisers;
+  return chapter;
+}
+
+// add organisers for all the chapters
+function populateAllChapters(chapters) {
+  return Promise.all(chapters.map(chapter => populateOrganisers(chapter)));
+}
 
 async function index(req, res, next) {
   try {
     const chapters = await ChapterModel.find()
-    return res.json(chapters)
+    const chaptersWithOrganisers = await populateAllChapters(chapters);
+    return res.json(chaptersWithOrganisers)
   } catch (err) {
     return next(err)
   }
@@ -33,9 +47,26 @@ async function create(req, res, next) {
 async function update(req, res, next) {
   const { id } = req.params;
   const { city, organisers } = req.body;
-  console.log(city);
   try {
-    const chapter = await ChapterModel.findById(id)
+    const chapter = await ChapterModel.findById(id);
+    chapter.city = city
+    if (organisers) {
+      chapter.organisers = organisers;
+    } else {
+      chapter.organisers = [];
+    }
+    await chapter.save();
+    next();
+  } catch (err) {
+    return next(err);
+  }
+};
+
+async function patch(req, res, next) {
+  const { id } = req.params;
+  const { city, organisers } = req.body;
+  try {
+    const chapter = await ChapterModel.findById(id);
     chapter.city = city
     if (organisers) {
       const organisersIds = chapter.organisers.map(organiser => organiser.toString());
@@ -46,12 +77,11 @@ async function update(req, res, next) {
         });
     };
     await chapter.save();
-    const chapters = await ChapterModel.find();
-    return res.json(chapters)
+    next();
   } catch (err) {
-    return next(err)
+    return next(err);
   }
-};
+}
 
 async function remove(req, res, next) {
   const { id } = req.params;
@@ -60,7 +90,7 @@ async function remove(req, res, next) {
     await ChapterModel.remove(chapter)
     return res.send("Removed")
   } catch (err) {
-    return next(err)
+    return next(err);
   }
 };
 
@@ -69,5 +99,6 @@ module.exports = {
   show,
   create,
   update,
+  patch,
   remove
 }
