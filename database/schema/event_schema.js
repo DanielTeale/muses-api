@@ -37,7 +37,7 @@ const EventSchema = new Schema({
     ref: "Chapter",
     required: true
   },
- 
+
   type: {
     type: String,
     enum: ["Workshop", "Meetup"],

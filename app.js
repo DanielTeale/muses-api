@@ -3,6 +3,7 @@ const morgan = require("morgan")
 const app = express()
 const passport = require("./config/passport")
 const cors = require("cors")
+const {errors} = require("celebrate")
 
 app.use(passport.initialize())
 
