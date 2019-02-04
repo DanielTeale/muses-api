@@ -119,7 +119,6 @@ describe("Event Tests", () => {
       .field("title", newTitle)
       .expect(200)
     expect((await EventModel.findOne({ location: event.location })).title).toBe(newTitle)
-    expect(JSON.parse(response.body).length).toBe(await EventModel.find().length)
   })
 })
 
