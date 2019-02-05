@@ -34,6 +34,24 @@ const fileUpload = async (files) => {
   return data
 }
 
+const deleteImage = (imageUrl) => {
+  if (!imageUrl.match(/s3/)) {
+    return;
+  }
+  const Key = imageUrl
+    .split("/")
+    .slice(3)
+    .join("/");
+  console.log(Key)
+  var params = {
+    Bucket: process.env.AWS_BUCKET,
+    Key
+  };
+  s3.deleteObject(params, function (err, data) {
+    if (err) throw err;
+  });
+}
+
 const fieldsParseCreate = (fields, data) => {
   const formFields = {}
   for (let key in fields) {
@@ -56,6 +74,7 @@ const fieldsParseUpdate = (fields, data, model) => {
     }
   }
   if (data) {
+    deleteImage(model.image)
     model.image = data.Location
   }
   return model
@@ -64,6 +83,7 @@ const fieldsParseUpdate = (fields, data, model) => {
 module.exports = {
   fileUpload,
   uploadFile,
+  deleteImage,
   fieldsParseCreate,
   fieldsParseUpdate
 };
