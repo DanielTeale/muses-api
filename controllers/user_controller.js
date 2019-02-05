@@ -39,11 +39,11 @@ async function loginVerify(req, res, next) {
   const { email, password } = req.body
   const user = await UserModel.findOne({ email })
   if (!user) {
-    return next(res.send("Incorrect name or password"))
+    return next(res.status(401).send("Invalid Username or password"))
   }
   const valid = user.authenticate(password);
   if (!valid) {
-    return next(res.send("Incorrect name or password"))
+    return next(res.status(401).send("Invalid Username or password"))
   }
   const token = JWTService.generateToken(user)
   const userObject = JSON.parse(JSON.stringify(user))
