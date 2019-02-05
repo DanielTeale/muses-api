@@ -7,6 +7,7 @@ const ChapterModel = require("../database/models/chapter_model");
 const SponsorModel = require("./models/sponsor_model");
 const ResourceModel = require("../database/models/resource_model");
 const UserModel = require("../database/models/user_model");
+const NewsModel = require("../database/models/news_model");
 
 const allPromises = []
 
@@ -76,9 +77,18 @@ async function createSponsors() {
   }
 }
 
-async function runSeed() {
+async function createNews() {
+  for (let i = 0; i < 10; i++) {
+    allPromises.push(NewsModel.create({
+      title: faker.lorem.sentence(),
+      content: faker.lorem.paragraphs(),
+      image: faker.image.imageUrl(),
+      date_created: faker.date.recent(),
+    }));
+  }
+}
 
-  await createSponsors()
+async function runSeed() {
 
   await createResources()
 
@@ -92,7 +102,8 @@ async function runSeed() {
   await createEvents("Melbourne");
   await createEvents("Brisbane");
   await createEvents("Perth");
-  await createSponsors()
+  await createSponsors();
+  await createNews();
 
   Promise.all(allPromises)
     .then(entries => {
