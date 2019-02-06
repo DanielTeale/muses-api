@@ -97,12 +97,12 @@ async function runSeed() {
   await createUsers("Brisbane");
   await createUsers("Perth");
 
+  await createSponsors();
 
   await createEvents("Sydney");
   await createEvents("Melbourne");
   await createEvents("Brisbane");
   await createEvents("Perth");
-  await createSponsors();
   await createNews();
 
   Promise.all(allPromises)
