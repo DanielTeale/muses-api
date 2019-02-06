@@ -29,7 +29,7 @@ async function create(req, res) {
       if (files.file) {
         var data = await AWSService.fileUpload(files)
       }
-      const formFields = AWSService.fieldParse(fields, data)
+      const formFields = AWSService.fieldsParseCreate(fields, data)
 
       const sponsor = new SponsorModel(formFields)
 
