@@ -45,6 +45,17 @@ allPromises.push(ChapterModel.create({
   city: "Perth"
 }))
 
+async function createSponsors() {
+  for (let i = 0; i < 10; i++) {
+    allPromises.push(SponsorModel.create({
+      name: faker.company.companyName(),
+      description: faker.lorem.paragraph(),
+      website: faker.internet.url(),
+      image: faker.image.imageUrl()
+    }))
+  }
+}
+
 async function createEvents(city) {
   const chapter = await ChapterModel.findOne({ city: city })
   const sponsors = await SponsorModel.find()
@@ -65,17 +76,6 @@ async function createEvents(city) {
     }))
   }
 };
-
-async function createSponsors() {
-  for (let i = 0; i < 10; i++) {
-    allPromises.push(SponsorModel.create({
-      name: faker.company.companyName(),
-      description: faker.lorem.paragraph(),
-      website: faker.internet.url(),
-      image: faker.image.imageUrl()
-    }))
-  }
-}
 
 async function createNews() {
   for (let i = 0; i < 10; i++) {
