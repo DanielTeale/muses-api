@@ -7,9 +7,9 @@ const {errors} = require("celebrate")
 
 app.use(passport.initialize())
 
-// app.use(cors({
-//   origin: process.env.FRONT_END_DOMAIN
-// }))
+app.use(cors({
+  origin: process.env.FRONT_END_DOMAIN
+}))
 
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())

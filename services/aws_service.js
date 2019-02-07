@@ -73,7 +73,7 @@ const fieldsParseUpdate = (fields, data, model) => {
       model[key] = fields[key][0]
     }
   }
-  if (data) {
+  if (data && model.image) {
     deleteImage(model.image)
     model.image = data.Location
   }
